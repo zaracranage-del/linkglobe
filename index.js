@@ -1,5 +1,4 @@
 const express = require('express');
-const geoip = require('geoip-lite');
 const app = express();
 
 const amazonStores = {
@@ -15,23 +14,18 @@ const amazonStores = {
 
 app.get('/redirect', (req, res) => {
   const { asin, tag } = req.query;
-  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-  const geo = geoip.lookup(ip);
-  const country = geo ? geo.country : 'US';
+  const country = req.headers['x-vercel-ip-country'] || 'US';
   const store = amazonStores[country] || amazonStores['US'];
   const redirectUrl = `${store}/dp/${asin}?tag=${tag}`;
-  console.log(`Visitor from ${country} → redirecting to ${redirectUrl}`);
   res.redirect(redirectUrl);
 });
 
 app.get('/', (req, res) => {
   res.send(`
-    <h1>🌏 LinkRedirect</h1>
+    <h1>🌏 LinkGlobe</h1>
     <p>Smart affiliate links for global audiences.</p>
     <p>Usage: /redirect?asin=PRODUCT_ID&tag=YOUR_AFFILIATE_TAG</p>
   `);
 });
 
-app.listen(3000, () => {
-  console.log('LinkRedirect is running on http://localhost:3000');
-});
+module.exports = app;
