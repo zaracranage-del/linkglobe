@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkGlobe Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0c0c14; --soft: #f6f4f0; --cream: #fdfbf8;
+      --gold: #b8965a; --gold-light: #e8d9be; --gold-pale: #faf5ec;
+      --muted: #7a7570; --border: #e5e0d8; --white: #ffffff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
+
+    /* HEADER */
+    .hdr { background: var(--white); border-bottom: 1px solid var(--border); text-align: center; padding: 40px 24px 0; }
+    .hdr-inner { max-width: 600px; margin: 0 auto; }
+    .avatar { width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 700; color: var(--gold); background: var(--gold-pale); border: 3px solid var(--white); box-shadow: 0 0 0 2px var(--gold-light); overflow: hidden; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .creator-name { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .creator-bio { font-size: 15px; color: var(--muted); line-height: 1.65; max-width: 380px; margin: 0 auto 20px; }
+    .socials { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+    .soc { display: inline-flex; align-items: center; gap: 6px; background: var(--soft); border: 1px solid var(--border); color: var(--ink); text-decoration: none; padding: 7px 14px; border-radius: 4px; font-size: 13px; font-weight: 500; transition: all 0.2s; }
+    .soc:hover { background: var(--ink); color: white; border-color: var(--ink); }
+    .hdr-tabs { border-top: 1px solid var(--border); }
+    .hdr-tab { padding: 14px 28px; font-size: 14px; color: var(--ink); border-bottom: 2px solid var(--gold); display: inline-block; font-weight: 500; }
+
+    /* MAIN */
+    .main { max-width: 980px; margin: 0 auto; padding: 36px 24px 80px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 18px; }
+
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; animation: up 0.4s ease both; }
+    .card:nth-child(1){animation-delay:0.05s}.card:nth-child(2){animation-delay:0.1s}.card:nth-child(3){animation-delay:0.15s}.card:nth-child(4){animation-delay:0.2s}.card:nth-child(5){animation-delay:0.25s}.card:nth-child(6){animation-delay:0.3s}
+    @keyframes up { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(0,0,0,0.1); }
+    .card-img { width: 100%; height: 200px; background: var(--soft); display: flex; align-items: center; justify-content: center; font-size: 52px; overflow: hidden; }
+    .card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .card-body { padding: 14px 16px; }
+    .card-store { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gold); margin-bottom: 4px; }
+    .card-name { font-size: 14px; font-weight: 500; line-height: 1.4; margin-bottom: 12px; }
+    .btn-shop { display: block; width: 100%; background: var(--ink); color: white; border: none; padding: 11px; border-radius: 4px; font-size: 14px; font-weight: 500; font-family: 'Outfit', sans-serif; cursor: pointer; text-align: center; text-decoration: none; transition: background 0.15s; }
+    .btn-shop:hover { background: #1c1c2c; }
+
+    /* EMPTY */
+    .empty { text-align: center; padding: 80px 24px; color: var(--muted); }
+    .empty-icon { font-size: 52px; margin-bottom: 16px; }
+    .empty h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--ink); margin-bottom: 8px; }
+
+    /* GEO TOAST */
+    .geo-toast { display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--ink); color: white; border-radius: 4px; padding: 10px 20px; font-size: 13px; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.2); z-index: 100; animation: slideup 0.35s ease; }
+    .geo-toast.show { display: block; }
+    @keyframes slideup { from { opacity:0; transform:translateX(-50%) translateY(8px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+
+    /* NOT FOUND */
+    .notfound { text-align: center; padding: 120px 24px; }
+    .notfound h1 { font-family: 'Cormorant Garamond', serif; font-size: 36px; margin-bottom: 12px; }
+    .notfound p { color: var(--muted); font-size: 16px; margin-bottom: 28px; }
+
+    footer { text-align: center; padding: 28px; border-top: 1px solid var(--border); }
+    footer a { font-size: 13px; color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--ink); }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .card-img { height: 150px; font-size: 36px; }
+      .main { padding: 24px 14px 60px; }
+    }
+  </style>
+</head>
+<body>
+<div id="app"><div style="text-align:center;padding:80px;color:var(--muted)">Loading...</div></div>
+<div class="geo-toast" id="geoToast"></div>
+
+<script>
+  const handle = new URLSearchParams(window.location.search).get('handle') || '';
+  const profile = JSON.parse(localStorage.getItem('lg_profile') || 'null');
+
+  function esc(s) {
+    if (!s) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  if (!profile || (handle && profile.handle !== handle)) {
+    document.getElementById('app').innerHTML = `
+      <div class="notfound">
+        <div style="font-size:56px;margin-bottom:20px">🌏</div>
+        <h1>Store not found</h1>
+        <p>The creator <strong>${esc(handle)}</strong> hasn't set up their store yet.</p>
+        <a href="/onboarding.html" style="display:inline-block;background:var(--ink);color:white;padding:14px 32px;border-radius:4px;text-decoration:none;font-size:15px;font-weight:500;margin-top:8px;">Create your store →</a>
+      </div>
+      <footer><a href="/index.html">🌏 Powered by LinkGlobe</a></footer>
+    `;
+  } else {
+    render(profile);
+    document.title = `${profile.name}'s Picks – LinkGlobe`;
+    tryGeoBanner();
+  }
+
+  function render(p) {
+    const products = p.products || [];
+    const avatarHtml = p.photo ? `<img src="${esc(p.photo)}" alt="${esc(p.name)}">` : esc((p.name || '?').charAt(0).toUpperCase());
+
+    const socials = [
+      p.instagram ? `<a class="soc" href="https://instagram.com/${esc(p.instagram)}" target="_blank">📷 Instagram</a>` : '',
+      p.tiktok    ? `<a class="soc" href="https://tiktok.com/@${esc(p.tiktok)}" target="_blank">🎵 TikTok</a>` : '',
+      p.youtube   ? `<a class="soc" href="https://youtube.com/${esc(p.youtube)}" target="_blank">▶️ YouTube</a>` : '',
+    ].filter(Boolean).join('');
+
+    const cards = products.length === 0
+      ? `<div class="empty"><div class="empty-icon">🛍️</div><h3>Coming soon</h3><p>Products are being added. Check back soon!</p></div>`
+      : `<div class="grid">${products.map(prod => `
+          <div class="card" onclick="window.open('${esc(prod.geoLink)}','_blank')">
+            <div class="card-img">${prod.image ? `<img src="${esc(prod.image)}" alt="${esc(prod.name)}" onerror="this.parentElement.innerHTML='<span style=font-size:52px>${prod.emoji||'🛍️'}</span>'">` : `<span>${prod.emoji || '🛍️'}</span>`}</div>
+            <div class="card-body">
+              <div class="card-store">${esc(prod.storeLabel)}</div>
+              <div class="card-name">${esc(prod.name)}</div>
+              <a class="btn-shop" href="${esc(prod.geoLink)}" target="_blank" onclick="event.stopPropagation()">Shop now →</a>
+            </div>
+          </div>`).join('')}</div>`;
+
+    document.getElementById('app').innerHTML = `
+      <header class="hdr">
+        <div class="hdr-inner">
+          <div class="avatar">${avatarHtml}</div>
+          <h1 class="creator-name">${esc(p.name)}'s Picks</h1>
+          ${p.bio ? `<p class="creator-bio">${esc(p.bio)}</p>` : ''}
+          ${socials ? `<div class="socials">${socials}</div>` : '<div style="height:16px"></div>'}
+          <div class="hdr-tabs"><span class="hdr-tab">All products</span></div>
+        </div>
+      </header>
+      <main class="main">${cards}</main>
+      <footer><a href="/index.html">🌏 Powered by LinkGlobe</a></footer>
+    `;
+  }
+
+  function tryGeoBanner() {
+    fetch('https://ipapi.co/json/')
+      .then(r => r.json())
+      .then(d => {
+        const country = d.country_name;
+        if (country && country !== 'United States') {
+          const t = document.getElementById('geoToast');
+          t.textContent = `🌏 Showing links for ${country}`;
+          t.classList.add('show');
+          setTimeout(() => t.classList.remove('show'), 4000);
+        }
+      })
+      .catch(() => {});
+  }
+</script>
+</body>
+</html>
