@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkGlobe – Get Started</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0c0c14; --soft: #f6f4f0; --cream: #fdfbf8;
+      --gold: #b8965a; --gold-light: #e8d9be; --gold-pale: #faf5ec;
+      --muted: #7a7570; --border: #e5e0d8; --white: #ffffff;
+      --success: #2a7d52;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
+
+    .layout { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+
+    /* LEFT */
+    .left {
+      background: var(--ink); padding: 60px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      position: relative; overflow: hidden;
+    }
+    .left::before { content: ''; position: absolute; top: -100px; right: -100px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(184,150,90,0.12) 0%, transparent 70%); pointer-events: none; }
+    .left-logo { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: white; text-decoration: none; }
+    .left-logo em { color: var(--gold); font-style: italic; }
+    .left-body { position: relative; z-index: 1; }
+    .left-body h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 3.5vw, 48px); font-weight: 700; color: white; line-height: 1.08; margin-bottom: 20px; }
+    .left-body h2 em { color: var(--gold); font-style: italic; }
+    .left-body p { color: rgba(255,255,255,0.45); font-size: 15px; line-height: 1.7; max-width: 360px; }
+
+    /* PLAN BADGE on left */
+    .plan-selected {
+      background: rgba(184,150,90,0.12); border: 1px solid rgba(184,150,90,0.3);
+      border-radius: 6px; padding: 16px 20px; margin-top: 0;
+      display: none;
+    }
+    .plan-selected.show { display: block; }
+    .plan-selected-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 4px; }
+    .plan-selected-name { font-size: 18px; font-weight: 600; color: var(--gold); }
+    .plan-selected-price { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+    .left-steps { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 18px; }
+    .lst { display: flex; align-items: flex-start; gap: 14px; }
+    .lst-dot { width: 28px; height: 28px; border-radius: 50%; background: rgba(184,150,90,0.15); border: 1px solid rgba(184,150,90,0.3); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--gold); flex-shrink: 0; }
+    .lst-dot.done { background: rgba(42,125,82,0.2); border-color: rgba(42,125,82,0.4); color: #4ade80; }
+    .lst-txt strong { display: block; color: white; font-size: 14px; font-weight: 500; margin-bottom: 1px; }
+    .lst-txt span { color: rgba(255,255,255,0.35); font-size: 13px; }
+
+    /* RIGHT */
+    .right { padding: 60px; display: flex; flex-direction: column; justify-content: center; }
+    .rhead { margin-bottom: 36px; }
+    .rhead h1 { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 700; margin-bottom: 6px; }
+    .rhead p { color: var(--muted); font-size: 14px; }
+
+    /* STEP INDICATOR */
+    .indicator { display: flex; align-items: center; gap: 6px; margin-bottom: 32px; }
+    .ind { height: 3px; border-radius: 2px; background: var(--border); transition: all 0.3s; flex: 1; }
+    .ind.active { background: var(--gold); }
+    .ind.done { background: var(--success); }
+    .ind-label { font-size: 12px; color: var(--muted); margin-left: 6px; white-space: nowrap; }
+
+    /* FORMS */
+    .fstep { display: none; animation: fin 0.25s ease; }
+    .fstep.active { display: block; }
+    @keyframes fin { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .field { margin-bottom: 18px; }
+    label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 5px; }
+    .fhint { font-size: 12px; color: var(--muted); margin-bottom: 5px; line-height: 1.5; }
+    input[type="text"], input[type="email"], input[type="url"], textarea {
+      width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 6px;
+      font-size: 15px; font-family: 'Outfit', sans-serif; color: var(--ink);
+      background: var(--soft); outline: none; transition: border-color 0.2s, background 0.2s;
+    }
+    input:focus, textarea:focus { border-color: var(--gold); background: var(--white); }
+    textarea { resize: vertical; min-height: 80px; }
+    .pfx { position: relative; }
+    .pfx-label { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--muted); pointer-events: none; white-space: nowrap; }
+    .pfx input { padding-left: 128px; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* PHOTO UPLOAD */
+    .photo-drop { border: 2px dashed var(--border); border-radius: 8px; padding: 28px; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+    .photo-drop:hover { border-color: var(--gold); background: var(--gold-pale); }
+    .photo-drop input { display: none; }
+    .photo-preview { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px; display: none; }
+    .photo-placeholder { font-size: 28px; margin-bottom: 8px; }
+    .photo-txt { font-size: 13px; color: var(--muted); }
+    .photo-txt strong { color: var(--gold); }
+
+    /* AFFILIATE BOX */
+    .aff-box { background: var(--soft); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 16px; }
+    .aff-box h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .aff-box p { font-size: 13px; color: var(--muted); line-height: 1.55; margin-bottom: 16px; }
+    .aff-box .two-col .field { margin-bottom: 0; }
+
+    /* PLAN SELECTOR */
+    .plan-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .plan-opt {
+      border: 1.5px solid var(--border); border-radius: 8px; padding: 16px 20px;
+      cursor: pointer; transition: border-color 0.2s, background 0.2s;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .plan-opt:hover { border-color: var(--gold); background: var(--gold-pale); }
+    .plan-opt.selected { border-color: var(--gold); background: var(--gold-pale); }
+    .plan-opt-left strong { display: block; font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+    .plan-opt-left span { font-size: 13px; color: var(--muted); }
+    .plan-opt-price { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--ink); }
+    .plan-opt.selected .plan-opt-price { color: var(--gold); }
+    .plan-trial-note { font-size: 12px; color: var(--muted); text-align: center; margin-top: 8px; line-height: 1.5; }
+
+    /* BUTTONS */
+    .btn-next { width: 100%; padding: 14px; background: var(--ink); color: white; border: none; border-radius: 6px; font-size: 15px; font-weight: 500; font-family: 'Outfit', sans-serif; cursor: pointer; transition: background 0.2s; margin-top: 6px; }
+    .btn-next:hover { background: #1c1c2c; }
+    .btn-next.gold-btn { background: var(--gold); }
+    .btn-next.gold-btn:hover { background: #a0804a; }
+    .btn-back { width: 100%; background: none; border: 1.5px solid var(--border); color: var(--muted); padding: 12px; border-radius: 6px; font-size: 14px; font-family: 'Outfit', sans-serif; cursor: pointer; margin-top: 8px; transition: all 0.2s; }
+    .btn-back:hover { border-color: var(--ink); color: var(--ink); }
+
+    /* SUCCESS */
+    .success-wrap { text-align: center; padding: 10px 0; display: none; }
+    .success-icon { font-size: 52px; margin-bottom: 18px; }
+    .success-wrap h2 { font-family: 'Cormorant Garamond', serif; font-size: 28px; margin-bottom: 10px; }
+    .success-wrap p { color: var(--muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px; }
+    .live-link { background: var(--gold-pale); border: 1.5px solid var(--gold-light); border-radius: 8px; padding: 14px 18px; font-size: 14px; font-weight: 500; color: var(--gold); margin-bottom: 20px; word-break: break-all; }
+
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; }
+      .left { display: none; }
+      .right { padding: 40px 20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- LEFT PANEL -->
+  <div class="left">
+    <a href="/index.html" class="left-logo">Link<em>Globe</em></a>
+    <div class="left-body">
+      <h2>Your products.<br>Every country.<br><em>Full commission.</em></h2>
+      <p>Stop losing money when Australian, UK, or Canadian fans click your US links. LinkGlobe geo-redirects everyone automatically — you just share one link.</p>
+      <div class="plan-selected" id="planBadge">
+        <div class="plan-selected-label">Selected plan</div>
+        <div class="plan-selected-name" id="planBadgeName">Free</div>
+        <div class="plan-selected-price" id="planBadgePrice">Always free</div>
+      </div>
+    </div>
+    <div class="left-steps" id="leftSteps">
+      <div class="lst"><div class="lst-dot" id="dot1">1</div><div class="lst-txt"><strong>Your profile</strong><span>Name, handle, photo</span></div></div>
+      <div class="lst"><div class="lst-dot" id="dot2">2</div><div class="lst-txt"><strong>Affiliate tags</strong><span>Set once, works forever</span></div></div>
+      <div class="lst"><div class="lst-dot" id="dot3">3</div><div class="lst-txt"><strong>Choose plan</strong><span>Free, Creator, or Pro</span></div></div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right">
+    <div id="formWrap">
+      <div class="rhead">
+        <h1 id="stepTitle">Create your account</h1>
+        <p id="stepDesc">Takes about 2 minutes. No credit card needed.</p>
+      </div>
+      <div class="indicator">
+        <div class="ind active" id="ind1"></div>
+        <div class="ind" id="ind2"></div>
+        <div class="ind" id="ind3"></div>
+        <span class="ind-label" id="indLabel">Step 1 of 3</span>
+      </div>
+
+      <!-- STEP 1: PROFILE -->
+      <div class="fstep active" id="step1">
+        <div class="field">
+          <label>Full name</label>
+          <input type="text" id="fname" placeholder="e.g. Zara Cranage">
+        </div>
+        <div class="field">
+          <label>Your handle</label>
+          <p class="fhint">Your storefront will be at: <strong>linkglobe.app/yourhandle</strong></p>
+          <div class="pfx">
+            <span class="pfx-label">linkglobe.app/</span>
+            <input type="text" id="fhandle" placeholder="zara" oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9_]/g,'')">
+          </div>
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="femail" placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label>Profile photo</label>
+          <div class="photo-drop" onclick="document.getElementById('fphoto').click()">
+            <img id="photoPreview" class="photo-preview" src="" alt="">
+            <div id="photoPlaceholder"><div class="photo-placeholder">📸</div><p class="photo-txt"><strong>Click to upload</strong> your photo</p></div>
+            <input type="file" id="fphoto" accept="image/*" onchange="previewPhoto(event)">
+          </div>
+        </div>
+        <div class="field">
+          <label>Bio <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+          <textarea id="fbio" placeholder="e.g. Beauty & lifestyle creator sharing my favourite finds ✨"></textarea>
+        </div>
+        <button class="btn-next" onclick="go(2)">Continue →</button>
+      </div>
+
+      <!-- STEP 2: AFFILIATE TAGS -->
+      <div class="fstep" id="step2">
+        <div class="aff-box">
+          <h3>🛒 Amazon affiliate tags</h3>
+          <p>Sign up free at <strong>associates.amazon.com</strong> for the US, and the equivalent sites for AU/UK/CA. Each gives you a tag like <em>yourname-20</em>. Add them once — we apply the right one automatically forever.</p>
+          <div class="two-col">
+            <div class="field"><label>🇺🇸 US tag (required)</label><input type="text" id="ftagUS" placeholder="yourname-20"></div>
+            <div class="field"><label>🇦🇺 AU tag</label><input type="text" id="ftagAU" placeholder="yourname-21"></div>
+            <div class="field"><label>🇬🇧 UK tag</label><input type="text" id="ftagUK" placeholder="yourname-21"></div>
+            <div class="field"><label>🇨🇦 CA tag</label><input type="text" id="ftagCA" placeholder="yourname-21"></div>
+          </div>
+        </div>
+        <div class="aff-box">
+          <h3>🏷️ Other brands</h3>
+          <p>Charlotte Tilbury, SKIMS, Sephora etc. — you can add products from any brand after signup. Just paste the product URL in your dashboard and we handle the rest.</p>
+        </div>
+        <button class="btn-next gold-btn" onclick="go(3)">Continue →</button>
+        <button class="btn-back" onclick="go(1)">← Back</button>
+      </div>
+
+      <!-- STEP 3: PLAN -->
+      <div class="fstep" id="step3">
+        <p style="font-size:14px;color:var(--muted);margin-bottom:20px;line-height:1.6;">Choose your plan. Start free — upgrade any time. No credit card needed today.</p>
+        <div class="plan-options">
+          <div class="plan-opt" id="planFree" onclick="selectPlan('free')">
+            <div class="plan-opt-left"><strong>Free</strong><span>Up to 5 products · Basic storefront</span></div>
+            <div class="plan-opt-price">$0</div>
+          </div>
+          <div class="plan-opt selected" id="planCreator" onclick="selectPlan('creator')">
+            <div class="plan-opt-left">
+              <strong>Creator ✦ Most popular</strong>
+              <span>Unlimited products · Analytics · Custom colours</span>
+            </div>
+            <div class="plan-opt-price">$12<span style="font-size:13px;font-family:'Outfit',sans-serif;color:var(--muted)">/mo</span></div>
+          </div>
+          <div class="plan-opt" id="planPro" onclick="selectPlan('pro')">
+            <div class="plan-opt-left"><strong>Pro</strong><span>Custom domain · Multiple storefronts · API</span></div>
+            <div class="plan-opt-price">$29<span style="font-size:13px;font-family:'Outfit',sans-serif;color:var(--muted)">/mo</span></div>
+          </div>
+        </div>
+        <p class="plan-trial-note" id="trialNote">✓ 14-day free trial — no credit card required</p>
+        <button class="btn-next gold-btn" onclick="finish()">Create my storefront 🎉</button>
+        <button class="btn-back" onclick="go(2)">← Back</button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-wrap" id="successWrap">
+      <div class="success-icon">🎉</div>
+      <h2>Your storefront is live!</h2>
+      <p>Share this link in your Instagram bio, TikTok, and YouTube description. Your fans are automatically sent to the right store for their country.</p>
+      <div class="live-link" id="liveLink"></div>
+      <button class="btn-next gold-btn" onclick="window.location.href='/dashboard.html'">Go to my dashboard →</button>
+      <button class="btn-next" style="background:var(--soft);color:var(--ink);border:1.5px solid var(--border);margin-top:8px;" onclick="copyLink()">Copy my link</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let step = 1;
+  let selectedPlan = 'creator';
+
+  // Read plan from URL
+  const urlPlan = new URLSearchParams(window.location.search).get('plan');
+  if (urlPlan) { selectedPlan = urlPlan; }
+
+  const planInfo = {
+    free:    { name: 'Free',    price: 'Always free',   trial: '' },
+    creator: { name: 'Creator', price: '$12/month',     trial: '✓ 14-day free trial — no credit card required' },
+    pro:     { name: 'Pro',     price: '$29/month',     trial: '✓ 14-day free trial — no credit card required' },
+  };
+
+  function initPlan() {
+    document.querySelectorAll('.plan-opt').forEach(el => el.classList.remove('selected'));
+    document.getElementById('plan' + cap(selectedPlan)).classList.add('selected');
+    const info = planInfo[selectedPlan];
+    document.getElementById('planBadge').classList.add('show');
+    document.getElementById('planBadgeName').textContent = info.name;
+    document.getElementById('planBadgePrice').textContent = info.price;
+    document.getElementById('trialNote').textContent = info.trial || 'Free forever — no credit card needed';
+  }
+  initPlan();
+
+  function selectPlan(p) {
+    selectedPlan = p;
+    initPlan();
+  }
+
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  const titles = ['', 'Create your account', 'Your affiliate tags', 'Choose your plan'];
+  const descs  = ['', 'Takes 2 minutes. No credit card needed.', 'Set once — we handle the rest forever.', 'Start free, upgrade any time.'];
+
+  function go(n) {
+    if (n === 2) {
+      if (!document.getElementById('fname').value.trim()) { alert('Please enter your name.'); return; }
+      if (!document.getElementById('fhandle').value.trim()) { alert('Please enter a handle for your storefront.'); return; }
+      if (!document.getElementById('femail').value.trim()) { alert('Please enter your email.'); return; }
+    }
+    if (n === 3) {
+      if (!document.getElementById('ftagUS').value.trim()) { alert('Please enter your US Amazon affiliate tag.'); return; }
+    }
+    document.getElementById('step' + step).classList.remove('active');
+    step = n;
+    document.getElementById('step' + step).classList.add('active');
+    document.getElementById('stepTitle').textContent = titles[step];
+    document.getElementById('stepDesc').textContent = descs[step];
+    document.getElementById('indLabel').textContent = `Step ${step} of 3`;
+    for (let i = 1; i <= 3; i++) {
+      const el = document.getElementById('ind' + i);
+      el.className = 'ind' + (i === step ? ' active' : i < step ? ' done' : '');
+      const dot = document.getElementById('dot' + i);
+      if (dot) dot.className = 'lst-dot' + (i < step ? ' done' : '');
+      if (dot && i < step) dot.textContent = '✓';
+    }
+  }
+
+  function previewPhoto(e) {
+    const file = e.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const img = document.getElementById('photoPreview');
+      img.src = ev.target.result; img.style.display = 'block';
+      document.getElementById('photoPlaceholder').style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function finish() {
+    const handle = document.getElementById('fhandle').value.trim();
+    const profile = {
+      name:     document.getElementById('fname').value.trim(),
+      handle,
+      email:    document.getElementById('femail').value.trim(),
+      bio:      document.getElementById('fbio').value.trim(),
+      photo:    document.getElementById('photoPreview').src || '',
+      tagUS:    document.getElementById('ftagUS').value.trim(),
+      tagAU:    document.getElementById('ftagAU').value.trim(),
+      tagUK:    document.getElementById('ftagUK').value.trim(),
+      tagCA:    document.getElementById('ftagCA').value.trim(),
+      plan:     selectedPlan,
+      products: [],
+      createdAt: new Date().toISOString()
+    };
+    localStorage.setItem('lg_profile', JSON.stringify(profile));
+    const link = `${window.location.origin}/storefront.html?handle=${handle}`;
+    document.getElementById('liveLink').textContent = link;
+    document.getElementById('formWrap').style.display = 'none';
+    document.getElementById('successWrap').style.display = 'block';
+  }
+
+  function copyLink() {
+    navigator.clipboard.writeText(document.getElementById('liveLink').textContent).then(() => alert('Copied!'));
+  }
+</script>
+</body>
+</html>
