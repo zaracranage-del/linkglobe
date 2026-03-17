@@ -3,55 +3,380 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LinkGlobe - Dashboard</title>
-  <style>/* Your existing CSS here */</style>
+  <title>LinkGlobe – Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --indigo: #4f46e5;
+      --indigo-dark: #3730a3;
+      --indigo-light: #e0e7ff;
+      --text: #0f0f1a;
+      --muted: #6b7280;
+      --bg: #f8f7ff;
+      --white: #ffffff;
+      --border: #e5e7f0;
+      --radius: 14px;
+      --success: #059669;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* NAV */
+    nav {
+      background: var(--white); border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 40px; height: 64px; position: sticky; top: 0; z-index: 50;
+    }
+    .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; color: var(--indigo); text-decoration: none; }
+    nav a { color: var(--muted); text-decoration: none; font-size: 14px; }
+    nav a:hover { color: var(--text); }
+
+    /* LAYOUT */
+    .container { max-width: 780px; margin: 0 auto; padding: 48px 24px 80px; }
+    .page-title { font-family: 'Syne', sans-serif; font-size: 30px; font-weight: 800; margin-bottom: 6px; }
+    .page-sub { color: var(--muted); font-size: 16px; margin-bottom: 36px; }
+
+    /* STATS */
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 36px; }
+    .stat {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px 24px;
+    }
+    .stat-num { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: var(--indigo); }
+    .stat-label { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+    /* TABS */
+    .tabs { display: flex; gap: 4px; margin-bottom: 24px; background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 4px; width: fit-content; }
+    .tab {
+      padding: 9px 20px; border-radius: 9px; border: none; background: transparent;
+      font-size: 14px; font-weight: 500; color: var(--muted); cursor: pointer; transition: all 0.15s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .tab.active { background: var(--indigo); color: white; }
+    .tab:hover:not(.active) { background: var(--bg); color: var(--text); }
+
+    /* PANELS */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* CARD */
+    .card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 20px; padding: 32px;
+    }
+    .card-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+    .card-sub { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+
+    /* FORM */
+    .field { margin-bottom: 20px; }
+    label { display: block; font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+    .hint-text { font-size: 12px; color: var(--muted); margin-bottom: 6px; margin-top: -2px; }
+    input[type="text"], input[type="url"] {
+      width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
+      border-radius: 10px; font-size: 15px; font-family: 'DM Sans', sans-serif;
+      color: var(--text); background: var(--bg); outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    input[type="text"]:focus, input[type="url"]:focus { border-color: var(--indigo); background: var(--white); }
+
+    .tag-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .tag-field label { font-size: 13px; }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+    /* GENERATE BUTTON */
+    .btn-generate {
+      width: 100%; background: var(--indigo); color: white; border: none;
+      padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 500;
+      font-family: 'DM Sans', sans-serif; cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-generate:hover { background: var(--indigo-dark); }
+    .btn-generate:active { transform: scale(0.99); }
+
+    /* RESULT */
+    .result { margin-top: 20px; display: none; }
+    .result-inner {
+      background: var(--indigo-light); border: 1.5px solid var(--indigo);
+      border-radius: 12px; padding: 14px 16px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .result-url {
+      font-family: monospace; font-size: 13px; color: var(--indigo);
+      word-break: break-all; flex: 1;
+    }
+    .btn-copy {
+      background: var(--indigo); color: white; border: none;
+      padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500;
+      cursor: pointer; white-space: nowrap; font-family: 'DM Sans', sans-serif;
+      transition: background 0.2s;
+    }
+    .btn-copy:hover { background: var(--indigo-dark); }
+    .btn-copy.copied { background: var(--success); }
+    .result-note { font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
+
+    /* LINKS LIST */
+    .links-section { margin-top: 48px; }
+    .links-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+    .empty-state {
+      background: var(--white); border: 1px dashed var(--border);
+      border-radius: 16px; padding: 48px; text-align: center; color: var(--muted);
+    }
+    .empty-state p { margin-top: 8px; font-size: 14px; }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 20px; }
+      .container { padding: 32px 16px 60px; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .stats .stat:last-child { grid-column: span 2; }
+      .tag-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-  <nav class="navbar">
-    <div class="logo">🌏 LinkGlobe</div>
-    <div><a href="/">Home</a></div>
-  </nav>
-  <div class="container">
-    <h2>Create Smart Link</h2>
-    <p class="subtitle">Enter US Amazon details; auto-redirects globally with your tags.</p>
-    <div class="card">
-      <label>Amazon ASIN (e.g., B08XYZ1234)</label>
-      <input id="asin" placeholder="B08XYZ1234" required>
-      <label>Your US Tag (tag=xyz-20)</label>
-      <input id="tag" placeholder="yourusertag-20" required>
-      <label>AU Tag (optional override)</label>
-      <input id="auTag" placeholder="yourautag-21">
-      <button onclick="generateLink()">Generate Link</button>
-      <div id="result" class="result">
-        <div class="result-box">
-          <span id="resultUrl" class="result-url"></span>
-          <button class="copy-btn" onclick="copyLink()">Copy</button>
-        </div>
-      </div>
+
+<nav>
+  <a href="/" class="logo">🌏 LinkGlobe</a>
+  <a href="/">← Back to home</a>
+</nav>
+
+<div class="container">
+  <h1 class="page-title">Create a smart link</h1>
+  <p class="page-sub">Your fans get auto-redirected to their local store — with your affiliate tag.</p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num" id="statLinks">0</div>
+      <div class="stat-label">Links created</div>
     </div>
-    <div class="stats">
-      <!-- Vercel Analytics integration later -->
-      <div class="stat">Total Clicks: 0</div>
-      <div class="stat">AU Redirects: 0</div>
-      <div class="stat">Conversion: 0%</div>
+    <div class="stat">
+      <div class="stat-num">–</div>
+      <div class="stat-label">Total clicks</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">–</div>
+      <div class="stat-label">AU redirects</div>
     </div>
   </div>
-  <script>
-    function generateLink() {
-      const asin = document.getElementById('asin').value;
-      const tag = document.getElementById('tag').value;
-      const auTag = document.getElementById('auTag').value;
-      const base = window.location.origin + '/api';
-      let params = `?asin=${asin}&tag=${tag}`;
-      if (auTag) params += `&au_tag=${auTag}`;
-      const link = `${base}${params}`;
-      document.getElementById('resultUrl').textContent = link;
-      document.getElementById('result').style.display = 'block';
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('amazon', this)">Amazon</button>
+    <button class="tab" onclick="switchTab('brand', this)">Other brands</button>
+  </div>
+
+  <!-- AMAZON TAB -->
+  <div id="amazon" class="panel active">
+    <div class="card">
+      <p class="card-title">Amazon geo-redirect</p>
+      <p class="card-sub">Enter the product's ASIN and your affiliate tags for each region. Fans are sent to their local Amazon automatically.</p>
+
+      <div class="field">
+        <label for="asin">Amazon ASIN <span style="color:red">*</span></label>
+        <p class="hint-text">Found in the product URL: amazon.com/dp/<strong>B08XYZ1234</strong></p>
+        <input type="text" id="asin" placeholder="e.g. B08XYZ1234">
+      </div>
+
+      <hr class="divider">
+      <p style="font-size:14px; font-weight:500; margin-bottom:16px;">Affiliate tags by country</p>
+      <p class="hint-text" style="margin-top:-10px; margin-bottom:16px;">Each Amazon marketplace has its own affiliate program. Add the tag for each region you want to earn from. US tag is required.</p>
+
+      <div class="tag-grid">
+        <div class="tag-field field">
+          <label>🇺🇸 US tag <span style="color:red">*</span></label>
+          <input type="text" id="tagUS" placeholder="yourtag-20">
+        </div>
+        <div class="tag-field field">
+          <label>🇦🇺 AU tag</label>
+          <input type="text" id="tagAU" placeholder="yourtag-21">
+        </div>
+        <div class="tag-field field">
+          <label>🇬🇧 UK tag</label>
+          <input type="text" id="tagUK" placeholder="yourtag-21">
+        </div>
+        <div class="tag-field field">
+          <label>🇨🇦 CA tag</label>
+          <input type="text" id="tagCA" placeholder="yourtag-21">
+        </div>
+        <div class="tag-field field">
+          <label>🇩🇪 DE tag</label>
+          <input type="text" id="tagDE" placeholder="yourtag-21">
+        </div>
+        <div class="tag-field field">
+          <label>🇯🇵 JP tag</label>
+          <input type="text" id="tagJP" placeholder="yourtag-21">
+        </div>
+      </div>
+
+      <button class="btn-generate" onclick="generateAmazon()">Generate smart link →</button>
+
+      <div class="result" id="resultAmazon">
+        <div class="result-inner">
+          <span class="result-url" id="urlAmazon"></span>
+          <button class="btn-copy" onclick="copy('urlAmazon', this)">Copy</button>
+        </div>
+        <p class="result-note">✅ Share this link everywhere. Fans in Australia get amazon.com.au, UK fans get amazon.co.uk — each with your local affiliate tag.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRAND TAB -->
+  <div id="brand" class="panel">
+    <div class="card">
+      <p class="card-title">Other brands (Charlotte Tilbury, SKIMS, Sephora, etc.)</p>
+      <p class="card-sub">Paste each country's product URL. Fans are redirected to their regional version automatically.</p>
+
+      <div class="field">
+        <label for="brandName">Brand name (for your reference)</label>
+        <input type="text" id="brandName" placeholder="e.g. Charlotte Tilbury">
+      </div>
+
+      <div class="field">
+        <label for="urlUS">🇺🇸 US URL <span style="color:red">*</span></label>
+        <input type="url" id="urlUS" placeholder="https://www.charlottetilbury.com/us/product/...">
+      </div>
+      <div class="field">
+        <label for="urlAU">🇦🇺 AU URL</label>
+        <input type="url" id="urlAU" placeholder="https://www.charlottetilbury.com/au/product/...">
+      </div>
+      <div class="field">
+        <label for="urlUK">🇬🇧 UK URL</label>
+        <input type="url" id="urlUK" placeholder="https://www.charlottetilbury.com/uk/product/...">
+      </div>
+      <div class="field">
+        <label for="urlCA">🇨🇦 CA URL</label>
+        <input type="url" id="urlCA" placeholder="https://www.charlottetilbury.com/ca/product/...">
+      </div>
+
+      <hr class="divider">
+      <div class="field">
+        <label for="brandTag">Affiliate tag / UTM parameter (optional)</label>
+        <p class="hint-text">Will be appended to every regional URL, e.g. <code>?ref=yourname</code></p>
+        <input type="text" id="brandTag" placeholder="?ref=yourname or &utm_source=yourname">
+      </div>
+
+      <button class="btn-generate" onclick="generateBrand()">Generate smart link →</button>
+
+      <div class="result" id="resultBrand">
+        <div class="result-inner">
+          <span class="result-url" id="urlBrand"></span>
+          <button class="btn-copy" onclick="copy('urlBrand', this)">Copy</button>
+        </div>
+        <p class="result-note">✅ Share this link. AU fans land on the AU store, UK fans on the UK store — no more wrong-region dead ends.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECENT LINKS -->
+  <div class="links-section">
+    <h2 class="links-title">Your recent links</h2>
+    <div id="linksList">
+      <div class="empty-state">
+        <span style="font-size: 32px;">🔗</span>
+        <p>No links yet. Create your first one above!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const BASE_URL = window.location.origin;
+  let savedLinks = JSON.parse(localStorage.getItem('lg_links') || '[]');
+
+  function switchTab(name, el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById(name).classList.add('active');
+    el.classList.add('active');
+  }
+
+  function generateAmazon() {
+    const asin = document.getElementById('asin').value.trim();
+    const tagUS = document.getElementById('tagUS').value.trim();
+    if (!asin) { alert('Please enter an ASIN.'); return; }
+    if (!tagUS) { alert('US affiliate tag is required.'); return; }
+
+    const tagAU = document.getElementById('tagAU').value.trim();
+    const tagUK = document.getElementById('tagUK').value.trim();
+    const tagCA = document.getElementById('tagCA').value.trim();
+    const tagDE = document.getElementById('tagDE').value.trim();
+    const tagJP = document.getElementById('tagJP').value.trim();
+
+    let url = `${BASE_URL}/api?asin=${encodeURIComponent(asin)}&tag=${encodeURIComponent(tagUS)}`;
+    if (tagAU) url += `&au_tag=${encodeURIComponent(tagAU)}`;
+    if (tagUK) url += `&uk_tag=${encodeURIComponent(tagUK)}`;
+    if (tagCA) url += `&ca_tag=${encodeURIComponent(tagCA)}`;
+    if (tagDE) url += `&de_tag=${encodeURIComponent(tagDE)}`;
+    if (tagJP) url += `&jp_tag=${encodeURIComponent(tagJP)}`;
+
+    document.getElementById('urlAmazon').textContent = url;
+    document.getElementById('resultAmazon').style.display = 'block';
+    saveLink('Amazon', asin, url);
+  }
+
+  function generateBrand() {
+    const urlUS = document.getElementById('urlUS').value.trim();
+    if (!urlUS) { alert('US URL is required.'); return; }
+
+    const urlAU = document.getElementById('urlAU').value.trim();
+    const urlUK = document.getElementById('urlUK').value.trim();
+    const urlCA = document.getElementById('urlCA').value.trim();
+    const tag = document.getElementById('brandTag').value.trim();
+    const name = document.getElementById('brandName').value.trim() || 'Brand';
+
+    let url = `${BASE_URL}/api/brand?us=${encodeURIComponent(urlUS)}`;
+    if (urlAU) url += `&au=${encodeURIComponent(urlAU)}`;
+    if (urlUK) url += `&uk=${encodeURIComponent(urlUK)}`;
+    if (urlCA) url += `&ca=${encodeURIComponent(urlCA)}`;
+    if (tag) url += `&tag=${encodeURIComponent(tag)}`;
+
+    document.getElementById('urlBrand').textContent = url;
+    document.getElementById('resultBrand').style.display = 'block';
+    saveLink(name, urlUS, url);
+  }
+
+  function copy(id, btn) {
+    const text = document.getElementById(id).textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function saveLink(brand, product, smartUrl) {
+    savedLinks.unshift({ brand, product, smartUrl, created: new Date().toLocaleDateString() });
+    if (savedLinks.length > 20) savedLinks = savedLinks.slice(0, 20);
+    localStorage.setItem('lg_links', JSON.stringify(savedLinks));
+    renderLinks();
+  }
+
+  function renderLinks() {
+    const el = document.getElementById('linksList');
+    document.getElementById('statLinks').textContent = savedLinks.length;
+    if (savedLinks.length === 0) {
+      el.innerHTML = '<div class="empty-state"><span style="font-size:32px">🔗</span><p>No links yet. Create your first one above!</p></div>';
+      return;
     }
-    function copyLink() {
-      navigator.clipboard.writeText(document.getElementById('resultUrl').textContent);
-      alert('Copied!');
-    }
-  </script>
+    el.innerHTML = savedLinks.map((l, i) => `
+      <div style="background:white;border:1px solid #e5e7f0;border-radius:14px;padding:18px 20px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <div style="flex:1;min-width:0;">
+          <p style="font-weight:500;font-size:14px;margin-bottom:4px;">${escHtml(l.brand)} · <span style="color:#6b7280;font-size:12px;">${l.created}</span></p>
+          <p style="font-family:monospace;font-size:12px;color:#4f46e5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escHtml(l.smartUrl)}</p>
+        </div>
+        <button onclick="copyDirect(${i})" style="background:#f0f0ff;color:#4f46e5;border:none;padding:8px 14px;border-radius:8px;font-size:13px;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;">Copy</button>
+      </div>
+    `).join('');
+  }
+
+  function copyDirect(i) {
+    navigator.clipboard.writeText(savedLinks[i].smartUrl).then(() => alert('Copied!'));
+  }
+
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  renderLinks();
+</script>
 </body>
 </html>
