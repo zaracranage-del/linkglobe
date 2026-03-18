@@ -4,103 +4,94 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LinkGlobe – Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --ink: #0c0c14; --soft: #f6f4f0; --cream: #fdfbf8;
-      --gold: #b8965a; --gold-light: #e8d9be; --gold-pale: #faf5ec;
-      --muted: #7a7570; --border: #e5e0d8; --white: #ffffff;
-      --success: #2a7d52; --danger: #c0392b;
+      --indigo: #4f46e5; --indigo-dark: #3730a3;
+      --indigo-light: #e0e7ff; --indigo-pale: #eef2ff;
+      --text: #0f0f1a; --muted: #6b7280; --bg: #f8f7ff;
+      --white: #ffffff; --border: #e5e7f0;
+      --success: #059669; --danger: #dc2626;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Outfit', sans-serif; background: var(--soft); color: var(--ink); min-height: 100vh; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-    /* NAV */
-    nav { background: var(--ink); padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-    .logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: white; text-decoration: none; }
-    .logo em { color: var(--gold); font-style: italic; }
-    .nav-r { display: flex; align-items: center; gap: 12px; }
-    .plan-pill { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); background: rgba(184,150,90,0.15); border: 1px solid rgba(184,150,90,0.3); padding: 4px 12px; border-radius: 2px; }
-    .btn-store { background: var(--gold); color: white; text-decoration: none; padding: 8px 18px; border-radius: 4px; font-size: 13px; font-weight: 500; transition: background 0.2s; }
-    .btn-store:hover { background: #a0804a; }
-    .nav-av { width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1.5px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: white; overflow: hidden; cursor: pointer; }
-    .nav-av img { width: 100%; height: 100%; object-fit: cover; }
+    nav { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .logo { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: white; text-decoration: none; }
+    .nav-r { display: flex; align-items: center; gap: 10px; }
+    .plan-pill { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: white; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); padding: 4px 10px; border-radius: 50px; }
+    .btn-store { background: white; color: var(--indigo); text-decoration: none; padding: 8px 18px; border-radius: 50px; font-size: 13px; font-weight: 600; transition: opacity 0.2s; }
+    .btn-store:hover { opacity: 0.9; }
+    .nav-ini { width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800; color: white; }
 
-    /* LAYOUT */
-    .container { max-width: 920px; margin: 0 auto; padding: 44px 24px 80px; }
+    .container { max-width: 940px; margin: 0 auto; padding: 40px 24px 80px; }
 
-    /* PLAN UPGRADE BANNER */
-    .upgrade-banner {
-      background: var(--ink); border-radius: 8px; padding: 20px 28px;
-      display: flex; justify-content: space-between; align-items: center;
-      gap: 16px; margin-bottom: 28px;
-    }
-    .upgrade-banner p { color: rgba(255,255,255,0.7); font-size: 14px; line-height: 1.5; }
+    /* UPGRADE BANNER */
+    .upgrade-banner { background: linear-gradient(135deg, #4f46e5, #7c3aed); border-radius: 16px; padding: 18px 24px; display: none; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px; }
+    .upgrade-banner.show { display: flex; }
+    .upgrade-banner p { color: rgba(255,255,255,0.85); font-size: 14px; line-height: 1.5; }
     .upgrade-banner p strong { color: white; }
-    .btn-upgrade { background: var(--gold); color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 13px; font-weight: 600; white-space: nowrap; transition: background 0.2s; border: none; cursor: pointer; font-family: 'Outfit', sans-serif; }
-    .btn-upgrade:hover { background: #a0804a; }
+    .btn-upgrade { background: white; color: var(--indigo); border: none; padding: 9px 18px; border-radius: 50px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; font-family: 'DM Sans', sans-serif; text-decoration: none; transition: opacity 0.2s; }
+    .btn-upgrade:hover { opacity: 0.9; }
 
     /* WELCOME */
-    .welcome { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 28px 32px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
-    .welcome h2 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; margin-bottom: 4px; }
-    .welcome p { color: var(--muted); font-size: 14px; }
-    .store-link-box { background: var(--gold-pale); border: 1px solid var(--gold-light); border-radius: 6px; padding: 10px 16px; font-size: 13px; color: var(--gold); font-weight: 500; cursor: pointer; transition: background 0.2s; white-space: nowrap; flex-shrink: 0; }
-    .store-link-box:hover { background: var(--gold-light); }
+    .welcome { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 24px 28px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+    .welcome h2 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .welcome p { color: var(--muted); font-size: 14px; line-height: 1.5; max-width: 500px; }
+    .store-pill { background: var(--indigo-pale); border: 1px solid var(--indigo-light); border-radius: 50px; padding: 10px 18px; font-size: 13px; color: var(--indigo); font-weight: 500; cursor: pointer; transition: background 0.2s; white-space: nowrap; flex-shrink: 0; }
+    .store-pill:hover { background: var(--indigo-light); }
 
     /* STATS */
-    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
-    .stat { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 20px 22px; position: relative; }
-    .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 700; color: var(--ink); }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+    .stat { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; position: relative; }
+    .stat-num { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--indigo); }
     .stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
-    .stat-lock { position: absolute; top: 12px; right: 14px; font-size: 14px; opacity: 0.4; }
+    .stat-lock { position: absolute; top: 10px; right: 12px; font-size: 13px; opacity: 0.4; display: none; }
 
-    /* ADD PRODUCT */
-    .add-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 28px 32px; margin-bottom: 28px; }
-    .card-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-    .card-sub { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
+    /* ADD */
+    .add-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 26px 28px; margin-bottom: 24px; }
+    .card-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+    .card-sub { font-size: 14px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
     .add-row { display: flex; gap: 10px; }
-    .add-input { flex: 1; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 15px; font-family: 'Outfit', sans-serif; color: var(--ink); background: var(--soft); outline: none; transition: border-color 0.2s, background 0.2s; }
-    .add-input:focus { border-color: var(--gold); background: var(--white); }
-    .btn-add { background: var(--ink); color: white; border: none; padding: 12px 22px; border-radius: 6px; font-size: 14px; font-weight: 500; font-family: 'Outfit', sans-serif; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
-    .btn-add:hover { background: #1c1c2c; }
+    .add-input { flex: 1; padding: 12px 20px; border: 2px solid var(--border); border-radius: 50px; font-size: 15px; font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s; }
+    .add-input:focus { border-color: var(--indigo); }
+    .btn-add { background: var(--indigo); color: white; border: none; padding: 12px 24px; border-radius: 50px; font-size: 14px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
+    .btn-add:hover { background: var(--indigo-dark); }
     .btn-add:disabled { background: var(--border); cursor: not-allowed; color: var(--muted); }
-    .add-hint { font-size: 12px; color: var(--muted); margin-top: 8px; }
-    .add-limit { font-size: 12px; color: var(--danger); margin-top: 8px; display: none; }
-
-    /* PROCESSING */
-    .processing { display: none; align-items: center; gap: 10px; margin-top: 14px; padding: 12px 16px; background: var(--soft); border-radius: 6px; border: 1px solid var(--border); }
+    .add-hint { font-size: 12px; color: var(--muted); margin-top: 8px; padding-left: 4px; }
+    .add-limit { font-size: 12px; color: var(--danger); margin-top: 8px; display: none; padding-left: 4px; }
+    .processing { display: none; align-items: center; gap: 10px; margin-top: 12px; padding: 11px 20px; background: var(--indigo-pale); border-radius: 50px; border: 1px solid var(--indigo-light); }
     .processing.show { display: flex; }
-    .spin { width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
+    .spin { width: 16px; height: 16px; border: 2px solid var(--indigo-light); border-top-color: var(--indigo); border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .proc-txt { font-size: 13px; color: var(--muted); }
+    .proc-txt { font-size: 13px; color: var(--indigo); }
 
     /* PRODUCTS */
-    .products-hdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-    .products-hdr h2 { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 700; }
+    .prod-hdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .prod-hdr h2 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; }
     .ftabs { display: flex; gap: 6px; }
-    .ftab { padding: 6px 14px; border-radius: 4px; font-size: 13px; border: 1px solid var(--border); background: var(--white); color: var(--muted); cursor: pointer; transition: all 0.15s; font-family: 'Outfit', sans-serif; }
-    .ftab.active { background: var(--ink); color: white; border-color: var(--ink); }
+    .ftab { padding: 6px 14px; border-radius: 50px; font-size: 13px; border: 1px solid var(--border); background: var(--white); color: var(--muted); cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
+    .ftab.active { background: var(--indigo); color: white; border-color: var(--indigo); }
 
-    .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
-    .prod-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: transform 0.15s, box-shadow 0.15s; animation: cardIn 0.25s ease; }
-    @keyframes cardIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
-    .prod-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.07); }
-    .prod-img { width: 100%; height: 170px; background: var(--soft); display: flex; align-items: center; justify-content: center; font-size: 44px; overflow: hidden; }
+    .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(248px, 1fr)); gap: 14px; }
+    .prod-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: transform 0.15s, box-shadow 0.15s; animation: cin 0.25s ease; }
+    @keyframes cin { from { opacity:0; transform:scale(0.97); } to { opacity:1; transform:scale(1); } }
+    .prod-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(79,70,229,0.1); }
+    .prod-img { width: 100%; height: 160px; background: var(--indigo-pale); display: flex; align-items: center; justify-content: center; font-size: 40px; overflow: hidden; }
     .prod-img img { width: 100%; height: 100%; object-fit: cover; }
-    .prod-body { padding: 14px 16px; }
-    .prod-store { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gold); margin-bottom: 3px; }
+    .prod-body { padding: 12px 14px; }
+    .prod-store { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--indigo); margin-bottom: 3px; }
     .prod-name { font-size: 13px; font-weight: 500; margin-bottom: 10px; line-height: 1.4; }
     .prod-actions { display: flex; gap: 6px; }
-    .btn-copy { flex: 1; background: var(--soft); border: 1px solid var(--border); color: var(--ink); padding: 7px 10px; border-radius: 5px; font-size: 12px; font-weight: 500; cursor: pointer; font-family: 'Outfit', sans-serif; transition: background 0.15s; }
-    .btn-copy:hover { background: var(--border); }
-    .btn-del { background: none; border: 1px solid var(--border); color: var(--muted); padding: 7px 9px; border-radius: 5px; font-size: 12px; cursor: pointer; transition: all 0.15s; }
+    .btn-copy { flex: 1; background: var(--indigo-pale); border: 1px solid var(--indigo-light); color: var(--indigo); padding: 7px 10px; border-radius: 50px; font-size: 12px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.15s; }
+    .btn-copy:hover { background: var(--indigo-light); }
+    .btn-del { background: none; border: 1px solid var(--border); color: var(--muted); padding: 7px 9px; border-radius: 50px; font-size: 12px; cursor: pointer; transition: all 0.15s; }
     .btn-del:hover { background: #fff0f0; border-color: var(--danger); color: var(--danger); }
 
-    /* EMPTY */
-    .empty { background: var(--white); border: 2px dashed var(--border); border-radius: 8px; padding: 56px 32px; text-align: center; grid-column: 1/-1; }
-    .empty-icon { font-size: 44px; margin-bottom: 14px; }
-    .empty h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; margin-bottom: 6px; }
-    .empty p { color: var(--muted); font-size: 14px; max-width: 340px; margin: 0 auto; line-height: 1.6; }
+    .empty { background: var(--white); border: 2px dashed var(--border); border-radius: 20px; padding: 52px 32px; text-align: center; grid-column: 1/-1; }
+    .empty-icon { font-size: 40px; margin-bottom: 12px; }
+    .empty h3 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+    .empty p { color: var(--muted); font-size: 14px; max-width: 320px; margin: 0 auto; line-height: 1.6; }
 
     @media (max-width: 680px) {
       nav { padding: 0 16px; }
@@ -115,63 +106,57 @@
 <body>
 
 <nav>
-  <a href="/" class="logo">Link<em>Globe</em></a>
+  <a href="/" class="logo">🌏 LinkGlobe</a>
   <div class="nav-r">
     <span class="plan-pill" id="navPlan">Free</span>
-    <a href="#" class="btn-store" id="navStore" target="_blank">View store →</a>
-    <div class="nav-av" id="navAv"></div>
+    <a href="#" class="btn-store" id="navStore" target="_blank">View my store →</a>
+    <div class="nav-ini" id="navIni">?</div>
   </div>
 </nav>
 
 <div class="container">
-
-  <!-- UPGRADE BANNER (shown on free plan) -->
-  <div class="upgrade-banner" id="upgradeBanner" style="display:none">
-    <p><strong>You're on the Free plan.</strong> Upgrade to Creator for unlimited products, click analytics, and custom colours.</p>
-    <button class="btn-upgrade" onclick="window.location.href='/index.html#pricing'">Upgrade to Creator — $12/mo →</button>
+  <div class="upgrade-banner" id="upgradeBanner">
+    <p><strong>You're on the Free plan</strong> — limited to 5 products. Upgrade to Creator for unlimited products, click analytics, and custom colours.</p>
+    <a href="/index.html#pricing" class="btn-upgrade">Upgrade to Creator — $12/mo →</a>
   </div>
 
-  <!-- WELCOME -->
   <div class="welcome">
     <div>
       <h2 id="welcomeName">Welcome back 👋</h2>
-      <p>Your storefront is live. Paste any product URL and it appears on your page instantly.</p>
+      <p>Your storefront is live. Paste any product URL below — every fan who clicks will be auto-redirected to their own country's store with your affiliate tag.</p>
     </div>
-    <div class="store-link-box" id="storeLinkBox" onclick="copyStore()">linkglobe.app/you</div>
+    <div class="store-pill" id="storePill" onclick="copyStore()">linkglobe.app/you</div>
   </div>
 
-  <!-- STATS -->
   <div class="stats">
     <div class="stat"><div class="stat-num" id="statProd">0</div><div class="stat-label">Products</div></div>
     <div class="stat"><div class="stat-num">–</div><div class="stat-label">Total clicks</div><div class="stat-lock" id="lockClicks">🔒</div></div>
-    <div class="stat"><div class="stat-num">–</div><div class="stat-label">AU redirects</div><div class="stat-lock" id="lockAU">🔒</div></div>
+    <div class="stat"><div class="stat-num">–</div><div class="stat-label">Countries reached</div><div class="stat-lock" id="lockCountries">🔒</div></div>
     <div class="stat"><div class="stat-num">–</div><div class="stat-label">Est. commission</div><div class="stat-lock" id="lockComm">🔒</div></div>
   </div>
 
-  <!-- ADD PRODUCT -->
   <div class="add-card">
     <h2 class="card-title">Add a product</h2>
-    <p class="card-sub">Paste any product URL — Amazon, Charlotte Tilbury, SKIMS, anything. We detect it and add it to your store.</p>
+    <p class="card-sub">Paste any product URL — Amazon, Charlotte Tilbury, SKIMS, anything. We build a smart link that redirects each fan to their local version of the store with your affiliate tag.</p>
     <div class="add-row">
-      <input class="add-input" type="url" id="prodUrl" placeholder="https://www.amazon.com/dp/B08XYZ1234 or any product link" onkeydown="if(event.key==='Enter')addProduct()">
+      <input class="add-input" type="url" id="prodUrl" placeholder="Paste any product URL here..." onkeydown="if(event.key==='Enter')addProduct()">
       <button class="btn-add" id="addBtn" onclick="addProduct()">Add product</button>
     </div>
-    <p class="add-hint" id="addHint">✅ Amazon, Charlotte Tilbury, SKIMS, Sephora, ASOS, and any brand with a product URL.</p>
-    <p class="add-limit" id="addLimit">⚠ You've reached the 5-product limit on the Free plan. <a href="/index.html#pricing" style="color:var(--gold);font-weight:500">Upgrade to Creator</a> for unlimited products.</p>
+    <p class="add-hint" id="addHint">✅ Amazon (all regions), Charlotte Tilbury, SKIMS, Sephora, ASOS, The Iconic, Chemist Warehouse, and any brand with a product URL.</p>
+    <p class="add-limit" id="addLimit">⚠ You've reached the 5-product limit on Free. <a href="/index.html#pricing" style="color:var(--indigo);font-weight:500">Upgrade to Creator</a> for unlimited products.</p>
     <div class="processing" id="processing">
       <div class="spin"></div>
-      <span class="proc-txt" id="procTxt">Fetching product details and creating your geo-smart link...</span>
+      <span class="proc-txt" id="procTxt">Building your geo-smart link...</span>
     </div>
   </div>
 
-  <!-- PRODUCTS -->
   <div>
-    <div class="products-hdr">
+    <div class="prod-hdr">
       <h2>My products</h2>
       <div class="ftabs">
-        <button class="ftab active" onclick="filter('all',this)">All</button>
-        <button class="ftab" onclick="filter('amazon',this)">Amazon</button>
-        <button class="ftab" onclick="filter('brand',this)">Brands</button>
+        <button class="ftab active" onclick="setFilter('all',this)">All</button>
+        <button class="ftab" onclick="setFilter('amazon',this)">Amazon</button>
+        <button class="ftab" onclick="setFilter('brand',this)">Brands</button>
       </div>
     </div>
     <div class="prod-grid" id="prodGrid"></div>
@@ -181,54 +166,29 @@
 <script>
   const FREE_LIMIT = 5;
   let profile = JSON.parse(localStorage.getItem('lg_profile') || 'null');
-
   if (!profile) {
-    profile = { name: 'Creator', handle: 'yourname', plan: 'free', tagUS: 'demo-20', tagAU: 'demo-21', tagUK: 'demo-21', tagCA: 'demo-21', products: [] };
+    profile = { name:'Creator', handle:'yourname', plan:'free', tagAU:'demo-21', tagUS:'demo-20', tagUK:'', tagCA:'', tagDE:'', tagJP:'', products:[] };
   }
   profile.products = profile.products || [];
 
   const plan = profile.plan || 'free';
-  const isFreePlan = plan === 'free';
+  const isFree = plan === 'free';
   const storeUrl = `${window.location.origin}/storefront.html?handle=${profile.handle}`;
 
-  // NAV
-  document.getElementById('navPlan').textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+  document.getElementById('navPlan').textContent = plan.charAt(0).toUpperCase()+plan.slice(1);
   document.getElementById('navStore').href = storeUrl;
-  if (profile.photo) {
-    document.getElementById('navAv').innerHTML = `<img src="${profile.photo}" alt="">`;
-  } else {
-    document.getElementById('navAv').textContent = (profile.name || 'C').charAt(0).toUpperCase();
-  }
+  document.getElementById('navIni').textContent = (profile.name||'C').charAt(0).toUpperCase();
+  document.getElementById('welcomeName').textContent = `Welcome back, ${(profile.name||'Creator').split(' ')[0]} 👋`;
+  document.getElementById('storePill').textContent = `linkglobe.app/${profile.handle}`;
 
-  // WELCOME
-  document.getElementById('welcomeName').textContent = `Welcome back, ${(profile.name || '').split(' ')[0] || 'Creator'} 👋`;
-  document.getElementById('storeLinkBox').textContent = `linkglobe.app/${profile.handle}`;
-
-  // PLAN GATES
-  if (isFreePlan) {
-    document.getElementById('upgradeBanner').style.display = 'flex';
-    document.getElementById('lockClicks').style.display = 'block';
-    document.getElementById('lockAU').style.display = 'block';
-    document.getElementById('lockComm').style.display = 'block';
-  }
-
-  function checkLimit() {
-    const count = (profile.products || []).length;
-    if (isFreePlan && count >= FREE_LIMIT) {
-      document.getElementById('addBtn').disabled = true;
-      document.getElementById('addHint').style.display = 'none';
-      document.getElementById('addLimit').style.display = 'block';
-      return true;
-    }
-    document.getElementById('addBtn').disabled = false;
-    document.getElementById('addHint').style.display = 'block';
-    document.getElementById('addLimit').style.display = 'none';
-    return false;
+  if (isFree) {
+    document.getElementById('upgradeBanner').classList.add('show');
+    ['lockClicks','lockCountries','lockComm'].forEach(id => document.getElementById(id).style.display='block');
   }
 
   function copyStore() {
     navigator.clipboard.writeText(storeUrl).then(() => {
-      const el = document.getElementById('storeLinkBox');
+      const el = document.getElementById('storePill');
       el.textContent = '✅ Copied!';
       setTimeout(() => { el.textContent = `linkglobe.app/${profile.handle}`; }, 2000);
     });
@@ -241,17 +201,18 @@
     if (url.includes('sephora.')) return 'sephora';
     if (url.includes('asos.')) return 'asos';
     if (url.includes('revolve.')) return 'revolve';
+    if (url.includes('theiconic.')) return 'theiconic';
+    if (url.includes('chemistwarehouse.')) return 'chemistwarehouse';
+    if (url.includes('net-a-porter.')) return 'net-a-porter';
     return 'brand';
   }
 
   const storeInfo = {
-    amazon: { label: 'Amazon', emoji: '📦' },
-    charlottetilbury: { label: 'Charlotte Tilbury', emoji: '💄' },
-    skims: { label: 'SKIMS', emoji: '👗' },
-    sephora: { label: 'Sephora', emoji: '💅' },
-    asos: { label: 'ASOS', emoji: '👟' },
-    revolve: { label: 'Revolve', emoji: '✨' },
-    brand: { label: 'Brand', emoji: '🏷️' },
+    amazon:{label:'Amazon',emoji:'📦'}, charlottetilbury:{label:'Charlotte Tilbury',emoji:'💄'},
+    skims:{label:'SKIMS',emoji:'👗'}, sephora:{label:'Sephora',emoji:'💅'},
+    asos:{label:'ASOS',emoji:'👟'}, revolve:{label:'Revolve',emoji:'✨'},
+    theiconic:{label:'The Iconic',emoji:'🛍️'}, chemistwarehouse:{label:'Chemist Warehouse',emoji:'💊'},
+    'net-a-porter':{label:'Net-A-Porter',emoji:'🖤'}, brand:{label:'Brand',emoji:'🏷️'},
   };
 
   function extractAsin(url) {
@@ -264,13 +225,26 @@
     if (store === 'amazon') {
       const asin = extractAsin(url);
       if (!asin) return url;
-      let link = `${base}/api?asin=${asin}&tag=${profile.tagUS || 'demo-20'}`;
+      // Build link with all available tags — the API picks the right one per visitor country
+      const fallback = profile.tagUS || profile.tagAU || 'notag';
+      let link = `${base}/api?asin=${asin}&tag=${fallback}`;
       if (profile.tagAU) link += `&au_tag=${profile.tagAU}`;
+      if (profile.tagUS) link += `&us_tag=${profile.tagUS}`;
       if (profile.tagUK) link += `&uk_tag=${profile.tagUK}`;
       if (profile.tagCA) link += `&ca_tag=${profile.tagCA}`;
+      if (profile.tagDE) link += `&de_tag=${profile.tagDE}`;
+      if (profile.tagJP) link += `&jp_tag=${profile.tagJP}`;
       return link;
     }
     return `${base}/api/brand?us=${encodeURIComponent(url)}`;
+  }
+
+  function checkLimit() {
+    const hit = isFree && profile.products.length >= FREE_LIMIT;
+    document.getElementById('addBtn').disabled = hit;
+    document.getElementById('addHint').style.display = hit ? 'none' : 'block';
+    document.getElementById('addLimit').style.display = hit ? 'block' : 'none';
+    return hit;
   }
 
   async function addProduct() {
@@ -283,23 +257,21 @@
     document.getElementById('processing').classList.add('show');
 
     const store = detectStore(raw);
-    const info = storeInfo[store];
-    const steps = ['Detecting store...', 'Fetching product details...', 'Building geo-smart link...', 'Almost done...'];
+    const steps = ['Detecting store...','Fetching product details...','Building geo-smart link...','Done!'];
     let i = 0;
     await new Promise(res => {
       const iv = setInterval(() => {
-        document.getElementById('procTxt').textContent = steps[i] || steps[steps.length-1];
-        i++;
-        if (i >= steps.length) { clearInterval(iv); setTimeout(res, 500); }
+        document.getElementById('procTxt').textContent = steps[Math.min(i,steps.length-1)]; i++;
+        if (i > steps.length) { clearInterval(iv); setTimeout(res, 300); }
       }, 550);
     });
 
     const asin = extractAsin(raw);
+    const info = storeInfo[store];
     const product = {
       id: Date.now(), store, storeLabel: info.label, emoji: info.emoji,
-      name: asin ? `Amazon Product (${asin})` : raw.split('/').filter(Boolean).pop().replace(/-/g,' ').slice(0,55) || 'Product',
-      image: '', price: '',
-      originalUrl: raw, geoLink: buildGeoLink(raw, store),
+      name: asin ? `Amazon Product (${asin})` : decodeURIComponent(raw.split('/').filter(Boolean).pop().split('?')[0]).replace(/-/g,' ').slice(0,55)||'Product',
+      image:'', price:'', originalUrl:raw, geoLink:buildGeoLink(raw,store),
     };
 
     profile.products.unshift(product);
@@ -307,16 +279,14 @@
     document.getElementById('addBtn').disabled = false;
     document.getElementById('processing').classList.remove('show');
     document.getElementById('prodUrl').value = '';
-    checkLimit();
-    renderProducts();
+    checkLimit(); renderProducts();
   }
 
   function removeProduct(id) {
     if (!confirm('Remove this product?')) return;
     profile.products = profile.products.filter(p => p.id !== id);
     localStorage.setItem('lg_profile', JSON.stringify(profile));
-    checkLimit();
-    renderProducts();
+    checkLimit(); renderProducts();
   }
 
   function copyProductLink(link, btn) {
@@ -327,26 +297,25 @@
   }
 
   let activeFilter = 'all';
-  function filter(f, el) {
+  function setFilter(f, el) {
     activeFilter = f;
     document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-    renderProducts();
+    el.classList.add('active'); renderProducts();
   }
 
   function renderProducts() {
     document.getElementById('statProd').textContent = profile.products.length;
     let list = profile.products;
-    if (activeFilter === 'amazon') list = list.filter(p => p.store === 'amazon');
-    if (activeFilter === 'brand') list = list.filter(p => p.store !== 'amazon');
+    if (activeFilter === 'amazon') list = list.filter(p => p.store==='amazon');
+    if (activeFilter === 'brand') list = list.filter(p => p.store!=='amazon');
     const grid = document.getElementById('prodGrid');
-    if (list.length === 0) {
-      grid.innerHTML = `<div class="empty"><div class="empty-icon">🛍️</div><h3>No products yet</h3><p>Paste a product URL above to add your first item.</p></div>`;
+    if (!list.length) {
+      grid.innerHTML = `<div class="empty"><div class="empty-icon">🛍️</div><h3>No products yet</h3><p>Paste a product URL above to add your first item. It'll appear on your storefront instantly.</p></div>`;
       return;
     }
     grid.innerHTML = list.map(p => `
       <div class="prod-card">
-        <div class="prod-img">${p.image ? `<img src="${esc(p.image)}" alt="" onerror="this.parentElement.innerHTML='<span style=font-size:44px>${p.emoji}</span>'">` : `<span>${p.emoji}</span>`}</div>
+        <div class="prod-img">${p.image?`<img src="${esc(p.image)}" alt="" onerror="this.parentElement.innerHTML='<span style=font-size:40px>${p.emoji}</span>'">`:`<span>${p.emoji}</span>`}</div>
         <div class="prod-body">
           <div class="prod-store">${esc(p.storeLabel)}</div>
           <div class="prod-name">${esc(p.name)}</div>
@@ -355,8 +324,7 @@
             <button class="btn-del" onclick="removeProduct(${p.id})">🗑</button>
           </div>
         </div>
-      </div>
-    `).join('');
+      </div>`).join('');
   }
 
   function esc(s) {
@@ -364,8 +332,7 @@
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
 
-  checkLimit();
-  renderProducts();
+  checkLimit(); renderProducts();
 </script>
 </body>
 </html>
