@@ -1,10 +1,10 @@
 {
   "routes": [
     { "src": "/api/brand", "dest": "/index.js" },
-    { "src": "/api", "dest": "/index.js" },
+    { "src": "/api",       "dest": "/index.js" },
     { "src": "/dashboard", "dest": "/dashboard.html" },
-    { "src": "/onboarding", "dest": "/onboarding.html" },
-    { "src": "/storefront", "dest": "/storefront.html" },
-    { "src": "/", "dest": "/index.html" }
+    { "src": "/onboarding","dest": "/onboarding.html" },
+    { "src": "/storefront","dest": "/storefront.html" },
+    { "src": "/",          "dest": "/index.html" }
   ]
 }
